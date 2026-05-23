@@ -22,7 +22,8 @@ import {
   Heart,
   Plus,
   Sun,
-  Moon
+  Moon,
+  ChevronDown
 } from 'lucide-react';
 
 export default function App() {
@@ -54,6 +55,10 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successData, setSuccessData] = useState(null);
+
+  // Custom Select Dropdown states & refs
+  const [isCourseOpen, setIsCourseOpen] = useState(false);
+  const courseDropdownRef = useRef(null);
 
   // Refs for Scroll Spy
   const sectionRefs = {
@@ -130,6 +135,23 @@ export default function App() {
   // Toggle Theme Utility
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
+  // Click outside custom select dropdown to close it
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (courseDropdownRef.current && !courseDropdownRef.current.contains(event.target)) {
+        setIsCourseOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Custom Select dropdown option click handler
+  const handleCourseSelect = (courseName) => {
+    setFormData(prev => ({ ...prev, courseSelect: courseName }));
+    setIsCourseOpen(false);
   };
 
   // Quick course selection utility
@@ -849,21 +871,72 @@ export default function App() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label htmlFor="courseSelect" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Kurs yo'nalishi</label>
-                      <div className="relative">
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 dark:text-gray-500">
-                          <GraduationCap className="w-4 h-4" />
-                        </span>
+                      <div className="relative" ref={courseDropdownRef}>
+                        <button
+                          type="button"
+                          onClick={() => setIsCourseOpen(!isCourseOpen)}
+                          className="w-full pl-11 pr-10 py-3.5 rounded-2xl glass-input text-sm text-left flex items-center justify-between bg-[#f8f7fc] dark:bg-[#06050c] focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:focus:ring-primary-500/30 transition-all cursor-pointer select-none"
+                        >
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 dark:text-gray-500">
+                            <GraduationCap className="w-4 h-4" />
+                          </span>
+                          <span className="text-gray-900 dark:text-white font-medium">
+                            {formData.courseSelect}
+                          </span>
+                          <span className={`absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 dark:text-gray-500 transition-transform duration-300 ${isCourseOpen ? 'rotate-180' : ''}`}>
+                            <ChevronDown className="w-4 h-4" />
+                          </span>
+                        </button>
+
+                        {/* Hidden native select for standard HTML form/accessibility compatibility */}
                         <select 
                           id="courseSelect" 
                           name="courseSelect" 
                           value={formData.courseSelect}
                           onChange={handleInputChange}
-                          className="w-full pl-11 pr-10 py-3.5 rounded-2xl glass-input text-sm appearance-none bg-[#f8f7fc] dark:bg-[#06050c]"
+                          className="sr-only"
                         >
                           <option value="Abituriyent Intensive">Abituriyent Intensive</option>
                           <option value="Bepul Grant Ta'lim">Bepul Grant Ta'lim</option>
                           <option value="General & Basic English">General & Basic English</option>
                         </select>
+
+                        {/* Beautiful custom dropdown list */}
+                        {isCourseOpen && (
+                          <div className="absolute left-0 right-0 mt-2 z-50 rounded-2xl border border-gray-150 dark:border-glassBorder bg-white/95 dark:bg-[#0f0c1e]/98 backdrop-blur-xl shadow-xl shadow-gray-200/10 dark:shadow-black/60 overflow-hidden transform origin-top transition-all duration-200 ease-out animate-fade-in">
+                            <div className="p-1.5 space-y-1">
+                              {[
+                                { name: "Abituriyent Intensive", desc: "OTMga tayyorlov chuqur kursi" },
+                                { name: "Bepul Grant Ta'lim", desc: "0 so'mlik maxsus grant guruh" },
+                                { name: "General & Basic English", desc: "Grammatika va so'zlashuv kursi" }
+                              ].map((course) => {
+                                const isSelected = formData.courseSelect === course.name;
+                                return (
+                                  <button
+                                    key={course.name}
+                                    type="button"
+                                    onClick={() => handleCourseSelect(course.name)}
+                                    className={`w-full text-left px-4 py-3 rounded-xl flex items-center justify-between transition-all duration-200 cursor-pointer ${
+                                      isSelected 
+                                        ? 'bg-primary-500/10 dark:bg-primary-500/20 text-primary-600 dark:text-primary-400 font-semibold' 
+                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100/70 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'
+                                    }`}
+                                  >
+                                    <div>
+                                      <p className="text-xs font-semibold">{course.name}</p>
+                                      <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5 font-normal">{course.desc}</p>
+                                    </div>
+                                    {isSelected && (
+                                      <span className="w-5 h-5 rounded-full bg-primary-500/10 dark:bg-primary-500/20 flex items-center justify-center text-primary-500 dark:text-primary-400 shrink-0 ml-2">
+                                        <Check className="w-3 h-3" />
+                                      </span>
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -1112,40 +1185,49 @@ export default function App() {
       {/* ================= SUCCESS GLASS MODAL ================= */}
       {showSuccess && successData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-[#06050c]/80 backdrop-blur-md transition-all duration-300 animate-fade-in">
-          <div className="glass-card rounded-[2.5rem] max-w-lg w-full p-8 md:p-10 border border-gray-200 dark:border-glassBorder bg-white dark:bg-glassBg/95 relative shadow-2xl scale-100 opacity-100 transition-all duration-300 transform">
+          <div className="rounded-[2.5rem] max-w-lg w-full p-8 md:p-10 border border-gray-100 dark:border-glassBorder bg-white dark:bg-glassBg/95 dark:backdrop-blur-xl relative shadow-2xl scale-100 opacity-100 transition-all duration-300 transform">
             <div className="absolute top-[-10%] left-[-10%] w-32 h-32 bg-accent-500/10 rounded-full blur-2xl"></div>
             <div className="absolute bottom-[-10%] right-[-10%] w-32 h-32 bg-primary-500/10 rounded-full blur-2xl"></div>
 
             <button 
               onClick={() => setShowSuccess(false)}
-              className="absolute top-6 right-6 w-8 h-8 rounded-full border border-gray-200 dark:border-glassBorder bg-black/5 dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 transition"
+              className="absolute top-6 right-6 w-8 h-8 rounded-full border border-gray-250/40 dark:border-glassBorder bg-gray-100/50 dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition"
             >
               <X className="w-4 h-4" />
             </button>
 
             <div className="text-center space-y-6">
-              <div className="mx-auto w-20 h-20 rounded-full bg-accent-500/20 border border-accent-400/40 flex items-center justify-center text-accent-500 dark:text-accent-400 animate-bounce shadow-lg">
+              <div className="mx-auto w-20 h-20 rounded-full bg-accent-500/10 dark:bg-accent-500/20 border border-accent-400/30 dark:border-accent-400/40 flex items-center justify-center text-accent-500 dark:text-accent-400 animate-bounce shadow-lg shadow-accent-500/5 dark:shadow-accent-500/10">
                 <Sparkles className="w-10 h-10" />
               </div>
 
               <div className="space-y-2">
                 <h3 className="font-display font-extrabold text-2xl md:text-3xl text-gray-900 dark:text-white">Arizangiz Qabul Qilindi!</h3>
-                <p className="text-xs uppercase font-bold tracking-wider text-accent-600 dark:text-accent-400">English Languages jamoasi sizni tabriklaydi</p>
+                <p className="text-xs uppercase font-bold tracking-widest text-accent-600 dark:text-accent-400 font-display">English Languages jamoasi sizni tabriklaydi</p>
               </div>
 
-              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed font-light">
-                Hurmatli <span className="text-gray-950 dark:text-white font-semibold">{successData.fullName}</span>, sizning konsultatsiya va ro'yxatdan o'tish arizangiz muvaffaqiyatli ravishda Telegram botga yuborildi. 15 daqiqa ichida operatorimiz <span className="text-gray-950 dark:text-white font-semibold">{successData.phoneNumber}</span> raqamingizga qo'ng'iroq qiladi!
+              <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed font-normal">
+                Hurmatli <span className="inline-block px-2 py-0.5 rounded-lg bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300 font-semibold">{successData.fullName}</span>, sizning konsultatsiya va ro'yxatdan o'tish arizangiz muvaffaqiyatli ravishda Telegram botga yuborildi. 15 daqiqa ichida operatorimiz <span className="inline-block px-2 py-0.5 rounded-lg bg-accent-50 dark:bg-accent-950/40 text-accent-700 dark:text-accent-300 font-semibold font-mono tracking-wide">{successData.phoneNumber}</span> raqamingizga qo'ng'iroq qiladi!
               </p>
 
-              <div className="rounded-2xl bg-black/5 dark:bg-white/5 border border-gray-200 dark:border-glassBorder p-4 text-left text-xs space-y-2 text-gray-700 dark:text-gray-300">
-                <p className="flex justify-between"><span className="text-gray-500">Tanlangan Kurs:</span> <span className="font-semibold text-gray-950 dark:text-white">{successData.course}</span></p>
-                <p className="flex justify-between"><span className="text-gray-500">Darajangiz:</span> <span className="font-semibold text-gray-950 dark:text-white">{successData.level}</span></p>
-                <p className="flex justify-between"><span className="text-gray-500">Qulay vaqt:</span> <span className="font-semibold text-gray-950 dark:text-white">{successData.time}</span></p>
+              <div className="rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-gray-150 dark:border-glassBorder p-5 text-left text-xs space-y-3 shadow-inner">
+                <p className="flex justify-between items-center border-b border-gray-200/40 dark:border-white/5 pb-2">
+                  <span className="text-gray-550 dark:text-gray-400 font-medium">Tanlangan Kurs:</span>
+                  <span className="font-bold text-gray-900 dark:text-white bg-white dark:bg-white/5 px-2.5 py-1 rounded-md border border-gray-200/50 dark:border-white/5 shadow-sm">{successData.course}</span>
+                </p>
+                <p className="flex justify-between items-center border-b border-gray-200/40 dark:border-white/5 pb-2">
+                  <span className="text-gray-550 dark:text-gray-400 font-medium">Darajangiz:</span>
+                  <span className="font-bold text-gray-900 dark:text-white bg-white dark:bg-white/5 px-2.5 py-1 rounded-md border border-gray-200/50 dark:border-white/5 shadow-sm">{successData.level}</span>
+                </p>
+                <p className="flex justify-between items-center">
+                  <span className="text-gray-550 dark:text-gray-400 font-medium">Qulay vaqt:</span>
+                  <span className="font-bold text-gray-900 dark:text-white bg-white dark:bg-white/5 px-2.5 py-1 rounded-md border border-gray-200/50 dark:border-white/5 shadow-sm">{successData.time}</span>
+                </p>
               </div>
 
               <button 
                 onClick={() => setShowSuccess(false)}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-accent-500 to-primary-500 hover:from-accent-600 hover:to-primary-600 text-white font-bold text-sm tracking-wider uppercase transition shadow-lg"
+                className="w-full py-4 rounded-2xl bg-gradient-to-r from-accent-500 via-primary-500 to-secondary-500 hover:from-accent-600 hover:via-primary-600 hover:to-secondary-600 text-white font-bold text-sm tracking-widest uppercase transition-all duration-300 shadow-lg shadow-primary-500/15 dark:shadow-primary-950/40 hover:shadow-xl hover:shadow-primary-500/25 active:scale-[0.98] cursor-pointer"
               >
                 Tushunarli, Rahmat!
               </button>
