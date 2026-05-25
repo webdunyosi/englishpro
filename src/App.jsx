@@ -28,8 +28,8 @@ import {
 
 export default function App() {
   // Telegram Configuration
-  const botToken = '8198213760:AAED-i6LGAsbRtDDAr0jyZoYwSQ0CS1DGCY';
-  const chatId = '8756366803';
+  const botToken = '8626617217:AAGMah488EGUd7iSCqTgGbUnX-EUCzyCJw4';
+  const chatId = '5414733748';
 
   // Theme state
   const [theme, setTheme] = useState(() => {
