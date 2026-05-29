@@ -209,7 +209,7 @@ export default function App() {
     const fullPhone = `+998 ${formData.phoneNumber.substring(0, 2)} ${formData.phoneNumber.substring(2, 5)} ${formData.phoneNumber.substring(5, 7)} ${formData.phoneNumber.substring(7, 9)}`;
 
     const textMessage = `
-🔔 *YANGI QABUL ARIZASI! (English Languages - React)*
+🔔 *YANGI QABUL ARIZASI!*
 
 👤 *Talaba:* ${formData.fullName}
 📞 *Telefon:* [${fullPhone}](tel:${fullPhone.replace(/\s/g, '')})
@@ -219,7 +219,6 @@ export default function App() {
 📝 *Qo'shimcha Fikr:* ${formData.notes || 'Kiritilmagan'}
 
 📅 *Sana va Vaqt:* ${timestamp}
-💻 *Saytdan:* English Languages React App
     `;
 
     try {
