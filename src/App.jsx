@@ -212,7 +212,7 @@ export default function App() {
 🔔 *YANGI QABUL ARIZASI!*
 
 👤 *Talaba:* ${formData.fullName}
-📞 *Telefon:* [${fullPhone}](tel:${fullPhone.replace(/\s/g, '')})
+📞 *Telefon:* ${fullPhone} ([Telegram](https://t.me/+998${formData.phoneNumber}))
 📚 *Guruh turi:* ${formData.courseSelect}
 ⏰ *Dars vaqti:* ${formData.timePreference}
 📈 *Hozirgi Darajasi:* ${formData.englishLevel}
