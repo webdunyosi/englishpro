@@ -34,7 +34,7 @@ import {
 export default function App() {
   // Telegram Configuration
   const botToken = '8626617217:AAEkSB-QneHhhD443PoHws4ow-_bics87x4';
-  const chatId = '-1002652982576';
+  const chatId = '5414733748';
 
   // Theme state
   const [theme, setTheme] = useState(() => {
