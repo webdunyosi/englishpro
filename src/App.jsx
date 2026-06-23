@@ -23,12 +23,17 @@ import {
   Plus,
   Sun,
   Moon,
-  ChevronDown
+  ChevronDown,
+  Trophy,
+  FlaskConical,
+  ExternalLink,
+  Star,
+  Zap
 } from 'lucide-react';
 
 export default function App() {
   // Telegram Configuration
-  const botToken = '8626617217:AAGMah488EGUd7iSCqTgGbUnX-EUCzyCJw4';
+  const botToken = '8626617217:AAEkSB-QneHhhD443PoHws4ow-_bics87x4';
   const chatId = '-1002652982576';
 
   // Theme state
@@ -66,6 +71,7 @@ export default function App() {
     teacher: useRef(null),
     courses: useRef(null),
     benefits: useRef(null),
+    tests: useRef(null),
     faq: useRef(null),
     qabul: useRef(null),
   };
@@ -291,7 +297,7 @@ export default function App() {
             </a>
 
             <ul className="flex items-center gap-8">
-              {['home', 'teacher', 'courses', 'benefits', 'faq'].map((sec) => (
+              {['home', 'teacher', 'courses', 'benefits', 'tests', 'faq'].map((sec) => (
                 <li key={sec}>
                   <a 
                     href={`#${sec}`} 
@@ -305,6 +311,7 @@ export default function App() {
                     {sec === 'teacher' && 'Ustoz haqida'}
                     {sec === 'courses' && 'Dars shartlari'}
                     {sec === 'benefits' && 'Afzalliklar'}
+                    {sec === 'tests' && '🏆 Test & Olimpiada'}
                     {sec === 'faq' && 'FAQ'}
                   </a>
                 </li>
@@ -1018,6 +1025,151 @@ export default function App() {
           </div>
         </section>
 
+        {/* ================= 5b. TESTS & OLIMPIADA SECTION ================= */}
+        <section id="tests" ref={sectionRefs.tests} className="py-20 relative">
+          <div className="text-center space-y-4 mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-card border border-yellow-400/40 dark:border-yellow-400/30 bg-yellow-50/60 dark:bg-yellow-900/20 text-xs font-semibold tracking-widest text-yellow-700 dark:text-yellow-400 uppercase">
+              <Trophy className="w-3.5 h-3.5" />
+              <span>Telegram Mini App</span>
+            </div>
+            <h2 className="font-display font-extrabold text-3xl md:text-5xl text-gray-900 dark:text-white">
+              Online <span className="text-gradient-primary">Test va Olimpiada</span>
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-sm md:text-base font-light">
+              O'quvchilarimiz Telegram mini app orqali istalgan vaqtda testlar ishlashi, bilimlarini sinab ko'rishi va olimpiadadagi natijalarini kuzatib borishi mumkin.
+            </p>
+          </div>
+
+          {/* Main CTA card */}
+          <div className="max-w-5xl mx-auto">
+            <div className="relative glass-card rounded-[3rem] p-1 overflow-hidden border border-yellow-300/30 dark:border-yellow-500/20 shadow-2xl">
+              {/* Animated gradient border effect */}
+              <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-r from-yellow-400/20 via-primary-500/20 to-secondary-500/20 dark:from-yellow-500/10 dark:via-primary-600/15 dark:to-secondary-600/10 animate-pulse pointer-events-none"></div>
+              
+              <div className="relative bg-white/70 dark:bg-glassBg/80 backdrop-blur-2xl rounded-[2.8rem] p-8 md:p-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                  
+                  {/* Left: Info */}
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg shadow-yellow-500/20">
+                        <FlaskConical className="w-8 h-8 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-display font-bold text-2xl text-gray-900 dark:text-white">Test Markazi</h3>
+                        <p className="text-xs text-yellow-600 dark:text-yellow-400 font-semibold uppercase tracking-wider">Telegram Mini App</p>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed font-light">
+                      Telegram mini app orqali <span className="text-gray-900 dark:text-white font-semibold">ingliz tili testlari</span> ishlang, grammatika bo'yicha bilimlaringizni tekshiring va <span className="text-gray-900 dark:text-white font-semibold">olimpiada natijalarini</span> real vaqtda kuzating!
+                    </p>
+
+                    <div className="space-y-3">
+                      {[
+                        { icon: FlaskConical, text: 'Grammatika va leksika testlari', color: 'text-blue-500 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-500/20' },
+                        { icon: Trophy, text: 'Olimpiada natijalari va reytingi', color: 'text-yellow-500 dark:text-yellow-400 bg-yellow-500/10 dark:bg-yellow-500/20' },
+                        { icon: Zap, text: 'Tezkor natija va baholash', color: 'text-accent-500 dark:text-accent-400 bg-accent-500/10 dark:bg-accent-500/20' },
+                        { icon: Star, text: 'Shaxsiy ball va progress', color: 'text-secondary-500 dark:text-secondary-400 bg-secondary-500/10 dark:bg-secondary-500/20' },
+                      ].map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${item.color}`}>
+                            <item.icon className="w-4 h-4" />
+                          </div>
+                          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">{item.text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right: Telegram preview card + CTA */}
+                  <div className="flex flex-col items-center gap-6">
+                    {/* Telegram App Preview */}
+                    <div className="relative w-full max-w-[280px] mx-auto">
+                      <div className="glass-card rounded-3xl p-5 border border-gray-200/50 dark:border-glassBorder/60 bg-white/90 dark:bg-glassBg/90 shadow-xl text-center space-y-4">
+                        {/* Fake telegram mini app header */}
+                        <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-glassBorder/40">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow">T</div>
+                            <div className="text-left">
+                              <p className="text-[10px] font-bold text-gray-900 dark:text-white">SofMebel Test Bot</p>
+                              <p className="text-[9px] text-gray-400">Mini App</p>
+                            </div>
+                          </div>
+                          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                        </div>
+                        
+                        {/* Fake test question preview */}
+                        <div className="text-left space-y-2">
+                          <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Savol 1 / 10</p>
+                          <p className="text-xs font-semibold text-gray-900 dark:text-white leading-relaxed">Choose the correct form of the verb:</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-300 italic">"She ___ to school every day."</p>
+                          <div className="space-y-1.5 pt-1">
+                            {['A) go', 'B) goes ✓', 'C) going', 'D) gone'].map((opt, i) => (
+                              <div key={i} className={`text-[10px] px-3 py-1.5 rounded-lg font-medium transition-all ${
+                                i === 1 
+                                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-300 dark:border-green-600/40'
+                                  : 'bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-glassBorder/40'
+                              }`}>{opt}</div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Progress bar */}
+                        <div className="space-y-1">
+                          <div className="flex justify-between text-[9px] text-gray-400">
+                            <span>Progress</span>
+                            <span>1/10</span>
+                          </div>
+                          <div className="h-1.5 bg-gray-100 dark:bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-full w-[10%] bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Floating trophy badge */}
+                      <div className="absolute -top-3 -right-3 w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg shadow-yellow-500/30 animate-float">
+                        <Trophy className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+
+                    {/* CTA Button */}
+                    <a
+                      href="https://t.me/sofmebel_webdunyosi_bot/test"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative overflow-hidden w-full max-w-[280px] flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-bold text-sm tracking-wide shadow-xl shadow-blue-500/25 dark:shadow-blue-900/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <span className="text-xl">✈️</span>
+                      <span>Telegram orqali kirish</span>
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </a>
+
+                    <p className="text-[10px] text-center text-gray-400 dark:text-gray-500 max-w-[240px]">
+                      Telegram ilovasi orqali kirish talab qilinadi. Bot bepul va barcha o'quvchilar uchun ochiq.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+              {[
+                { val: '100+', label: 'Test savollari', icon: FlaskConical, color: 'text-blue-500 dark:text-blue-400' },
+                { val: 'Har kuni', label: 'Yangi testlar', icon: Zap, color: 'text-accent-500 dark:text-accent-400' },
+                { val: '🏆', label: 'Olimpiada natijalari', icon: Trophy, color: 'text-yellow-500 dark:text-yellow-400' },
+                { val: 'Bepul', label: 'Hammaga ochiq', icon: Star, color: 'text-secondary-500 dark:text-secondary-400' },
+              ].map((s, i) => (
+                <div key={i} className="glass-card rounded-2xl p-5 text-center border border-gray-200/40 dark:border-glassBorder/40">
+                  <p className={`font-display font-extrabold text-2xl ${s.color}`}>{s.val}</p>
+                  <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-1 font-medium">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ================= 6. FAQ SECTION ================= */}
         <section id="faq" ref={sectionRefs.faq} className="py-20 relative">
           <div className="text-center space-y-4 mb-16">
@@ -1101,6 +1253,7 @@ export default function App() {
               <li><a href="#teacher" className="hover:text-primary-600 dark:hover:text-white transition-colors">Ustoz haqida</a></li>
               <li><a href="#courses" className="hover:text-primary-600 dark:hover:text-white transition-colors">Dars shartlari</a></li>
               <li><a href="#benefits" className="hover:text-primary-600 dark:hover:text-white transition-colors">Afzalliklarimiz</a></li>
+              <li><a href="#tests" className="hover:text-primary-600 dark:hover:text-white transition-colors flex items-center gap-1">🏆 Test & Olimpiada</a></li>
             </ul>
           </div>
 
@@ -1129,53 +1282,53 @@ export default function App() {
 
       {/* ================= MOBILE FLOATING BOTTOM NAV BAR ================= */}
       <div className="fixed bottom-4 left-4 right-4 z-50 md:hidden">
-        <div className="glass-bottom-nav rounded-full px-5 py-3 relative flex items-center justify-between max-w-md mx-auto">
+        <div className="glass-bottom-nav rounded-full px-3 py-3 relative flex items-center justify-between max-w-md mx-auto">
           
-          <div ref={navIndicatorRef} className="active-nav-bg absolute top-2.5 bottom-2.5 left-5 w-[50px] rounded-full bg-gradient-to-r from-primary-600 to-primary-500 -z-10 shadow-lg shadow-primary-500/30 opacity-90"></div>
+          <div ref={navIndicatorRef} className="active-nav-bg absolute top-2.5 bottom-2.5 left-3 w-[50px] rounded-full bg-gradient-to-r from-primary-600 to-primary-500 -z-10 shadow-lg shadow-primary-500/30 opacity-90"></div>
 
           <a 
             href="#home" 
             ref={(el) => (mobileNavItemsRef.current[0] = el)}
-            className={`mobile-nav-item flex flex-col items-center justify-center w-12 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'home' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
+            className={`mobile-nav-item flex flex-col items-center justify-center w-10 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'home' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
           >
-            <Home className="w-5 h-5" />
-            <span className="text-[8px] mt-1 font-bold">Asosiy</span>
+            <Home className="w-4 h-4" />
+            <span className="text-[7px] mt-1 font-bold">Asosiy</span>
           </a>
 
           <a 
             href="#teacher" 
             ref={(el) => (mobileNavItemsRef.current[1] = el)}
-            className={`mobile-nav-item flex flex-col items-center justify-center w-12 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'teacher' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
+            className={`mobile-nav-item flex flex-col items-center justify-center w-10 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'teacher' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
           >
-            <GraduationCap className="w-5 h-5" />
-            <span className="text-[8px] mt-1 font-bold">Ustoz</span>
+            <GraduationCap className="w-4 h-4" />
+            <span className="text-[7px] mt-1 font-bold">Ustoz</span>
           </a>
 
           <a 
             href="#courses" 
             ref={(el) => (mobileNavItemsRef.current[2] = el)}
-            className={`mobile-nav-item flex flex-col items-center justify-center w-12 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'courses' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
+            className={`mobile-nav-item flex flex-col items-center justify-center w-10 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'courses' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
           >
-            <BookMarked className="w-5 h-5" />
-            <span className="text-[8px] mt-1 font-bold">Shartlar</span>
+            <BookMarked className="w-4 h-4" />
+            <span className="text-[7px] mt-1 font-bold">Shartlar</span>
           </a>
 
           <a 
             href="#qabul" 
             ref={(el) => (mobileNavItemsRef.current[3] = el)}
-            className={`mobile-nav-item flex flex-col items-center justify-center w-12 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'qabul' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
+            className={`mobile-nav-item flex flex-col items-center justify-center w-10 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'qabul' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
           >
-            <ClipboardEdit className="w-5 h-5" />
-            <span className="text-[8px] mt-1 font-bold">Qabul</span>
+            <ClipboardEdit className="w-4 h-4" />
+            <span className="text-[7px] mt-1 font-bold">Qabul</span>
           </a>
 
           <a 
-            href="#faq" 
+            href="#tests" 
             ref={(el) => (mobileNavItemsRef.current[4] = el)}
-            className={`mobile-nav-item flex flex-col items-center justify-center w-12 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'faq' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
+            className={`mobile-nav-item flex flex-col items-center justify-center w-10 h-12 relative z-10 transition-colors duration-300 ${activeSection === 'tests' ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`}
           >
-            <HelpCircle className="w-5 h-5" />
-            <span className="text-[8px] mt-1 font-bold">FAQ</span>
+            <Trophy className="w-4 h-4" />
+            <span className="text-[7px] mt-1 font-bold">Test</span>
           </a>
 
         </div>
